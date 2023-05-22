@@ -1,25 +1,38 @@
-import { component$ } from '@builder.io/qwik';
-import type { DocumentHead } from '@builder.io/qwik-city';
+import { component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
+
+export const useDadJoke = routeLoader$(async () => {
+  const response = await fetch("https://icanhazdadjoke.com/", {
+    headers: { Accept: "application/json" },
+  });
+  return (await response.json()) as {
+    id: string;
+    status: number;
+    joke: string;
+  };
+});
 
 export default component$(() => {
+  const dadJokeSignal = useDadJoke();
+
   return (
     <>
-      <h1>Hi 👋</h1>
-      <p>
-        Can't wait to see what you build with qwik!
-        <br />
-        Happy coding.
-      </p>
+      <h1>Top Flavor Text</h1>
+      <div>
+        <h2>Random Dad Joke</h2>
+        <div>{dadJokeSignal.value.joke}</div>
+      </div>
     </>
   );
 });
 
 export const head: DocumentHead = {
-  title: 'Welcome to Qwik',
+  title: "MtG Flavor",
   meta: [
     {
-      name: 'description',
-      content: 'Qwik site description',
+      name: "MtG Flavor",
+      content: "Vote on your favorite MtG flavor text and discover more!",
     },
   ],
 };
