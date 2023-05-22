@@ -36,7 +36,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="absolute left-0 top-0 px-2 py-4 text-3xl">
+      <div class="absolute left-0 top-0 px-3 py-4 text-3xl">
         <a href="/">
           <LuArrowBigLeft />
         </a>
@@ -83,7 +83,7 @@ export default component$(() => {
               <div class="pb-1 text-sm opacity-70">
                 upvotes: {card.up_votes}
               </div>
-              <div class="overflow-hidden">
+              <div class="relative">
                 <Image
                   src={card.scryfall_art_crop_url}
                   layout="fixed"
@@ -91,6 +91,9 @@ export default component$(() => {
                   height={225}
                   alt={card.name}
                 />
+                <div class="absolute right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
+                  <LuThumbsUp />
+                </div>
               </div>
             </div>
 

@@ -34,7 +34,7 @@ export default component$(() => {
             </a>
           </p>
           <p class="p-2 text-center underline">
-            <a href="/shuffle" class="my-link">
+            <a href={`/shuffle/${cardData.id}`} class="my-link">
               Shuffle
             </a>
           </p>

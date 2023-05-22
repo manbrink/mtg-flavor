@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$, Form } from "@builder.io/qwik-city";
+import { routeLoader$, routeAction$, Form } from "@builder.io/qwik-city";
 
 import { createServerClient } from "supabase-auth-helpers-qwik";
 import { Image } from "@unpic/qwik";
@@ -16,18 +16,49 @@ export const useDB = routeLoader$(async (requestEv) => {
     requestEv
   );
 
-  const { data } = await supabaseClient.rpc("shuffle");
+  const shuffleData = await supabaseClient.rpc("shuffle");
 
-  return { data };
+  const cardData = await supabaseClient
+    .from("cards")
+    .select()
+    .eq("id", requestEv.params.cardId);
+
+  return { cardData, shuffleData };
+});
+
+export const useUpVote = routeAction$(async (upVote, requestEv) => {
+  const supabaseClient = createServerClient(
+    requestEv.env.get("PUBLIC_SUPABASE_URL")!,
+    requestEv.env.get("PUBLIC_SUPABASE_ANON_KEY")!,
+    requestEv
+  );
+
+  const { data, error } = await supabaseClient
+    .from("cards")
+    .update({ up_votes: upVote.up_votes })
+    .eq("id", upVote.id)
+    .select();
+
+  if (error) {
+    console.error(error);
+  } else {
+    return {
+      success: true,
+      data,
+    };
+  }
 });
 
 export default component$(() => {
   const cardSignal = useDB();
-  const cardData = cardSignal.value.data;
+  const cardData = cardSignal.value.cardData.data[0];
+  const shuffleData = cardSignal.value.shuffleData.data;
+
+  const action = useUpVote();
 
   return (
     <>
-      <div class="absolute left-0 top-0 px-2 py-4 text-3xl">
+      <div class="absolute left-0 top-0 px-3 py-4 text-3xl">
         <a href="/">
           <LuArrowBigLeft />
         </a>
@@ -36,12 +67,20 @@ export default component$(() => {
       <header class="pb-4 pt-2">
         <div>
           <Form class="flex justify-center">
-            <a class="px-3 pb-2 text-2xl" href="/shuffle">
+            <a class="px-3 pb-2 text-2xl" href={`/shuffle/${shuffleData.id}`}>
               <LuRefreshCcw />
             </a>
-            <a class="px-3 pb-2 text-2xl" href="/shuffle">
-              <LuThumbsUp />
-            </a>
+            <div class="cursor-pointer px-3 pb-2 text-2xl">
+              <LuThumbsUp
+                preventdefault:click
+                onClick$={async () => {
+                  await action.submit({
+                    id: cardData.id,
+                    up_votes: cardData.up_votes + 1,
+                  });
+                }}
+              />
+            </div>
           </Form>
         </div>
       </header>
