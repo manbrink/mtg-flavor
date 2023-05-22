@@ -5,8 +5,6 @@ import { createServerClient } from "supabase-auth-helpers-qwik";
 import { Image } from "@unpic/qwik";
 import { LuArrowBigLeft, LuThumbsUp } from "@qwikest/icons/lucide";
 
-import { DebouncedInput } from "~/components/debounced-input";
-
 interface Card {
   id: string;
   name: string;
@@ -77,7 +75,7 @@ export default component$(() => {
         {cardData.map((card: Card) => (
           <section
             key={card.id}
-            class="mx-auto flex flex-col items-center justify-center"
+            class="mx-auto flex min-h-full flex-col items-center justify-start"
           >
             <div class="shadow-lg">
               <div class="pb-1 text-sm opacity-70">
@@ -91,6 +89,7 @@ export default component$(() => {
                   height={225}
                   alt={card.name}
                 />
+
                 <div class="absolute right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
                   <LuThumbsUp
                     preventdefault:click
