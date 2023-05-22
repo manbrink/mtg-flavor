@@ -1,5 +1,5 @@
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
-import { routeAction$ } from "@builder.io/qwik-city";
+import { server$ } from "@builder.io/qwik-city";
 
 import { createClient } from "@supabase/supabase-js";
 import { Image } from "@unpic/qwik";
@@ -14,11 +14,10 @@ interface Card {
   up_votes: number;
 }
 
-export const useUpVote = routeAction$(async (upVote, requestEv) => {
-  const supabaseClient = createServerClient(
-    requestEv.env.get("PUBLIC_SUPABASE_URL")!,
-    requestEv.env.get("PUBLIC_SUPABASE_ANON_KEY")!,
-    requestEv
+export const upVote = server$(async (upVote) => {
+  const supabaseClient = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   );
 
   const { data, error } = await supabaseClient
@@ -30,6 +29,7 @@ export const useUpVote = routeAction$(async (upVote, requestEv) => {
   if (error) {
     console.error(error);
   } else {
+    console.log("data from server", data);
     return {
       success: true,
       data,
@@ -38,8 +38,6 @@ export const useUpVote = routeAction$(async (upVote, requestEv) => {
 });
 
 export default component$(() => {
-  const action = useUpVote();
-
   const searchTerm = useSignal("");
   const debouncedValue = useSignal("");
   const cardData = useSignal([] as Card[]);
@@ -77,7 +75,6 @@ export default component$(() => {
     if (error) {
       console.error(error);
     } else {
-      console.log(data);
       cardData.value = data as Card[];
     }
   });
@@ -146,12 +143,18 @@ export default component$(() => {
                 />
                 <div class="absolute right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
                   <LuThumbsUp
-                    preventdefault:click
                     onClick$={async () => {
-                      await action.submit({
+                      const res = await upVote({
                         id: card.id,
                         up_votes: card.up_votes + 1,
                       });
+
+                      if (res.success) {
+                        card.up_votes = res.data[0].up_votes;
+                        cardData.value = [...cardData.value];
+                      } else {
+                        console.error(res);
+                      }
                     }}
                   />
                 </div>

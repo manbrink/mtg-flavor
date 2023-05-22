@@ -4,6 +4,7 @@ import { routeLoader$, routeAction$ } from "@builder.io/qwik-city";
 import { createServerClient } from "supabase-auth-helpers-qwik";
 import { Image } from "@unpic/qwik";
 import { LuArrowBigLeft, LuThumbsUp } from "@qwikest/icons/lucide";
+import Cookies from "js-cookie";
 
 interface Card {
   id: string;
@@ -24,7 +25,7 @@ export const useDB = routeLoader$(async (requestEv) => {
   const { data } = await supabaseClient
     .from("cards")
     .select("*")
-    .limit(100)
+    .limit(200)
     .order("up_votes", { ascending: false });
 
   return { data };
@@ -46,6 +47,11 @@ export const useUpVote = routeAction$(async (upVote, requestEv) => {
   if (error) {
     console.error(error);
   } else {
+    Cookies.set(`upvoted-${upVote.id}`, "true", {
+      expires: 365,
+      sameSite: "strict",
+    });
+
     return {
       success: true,
       data,
