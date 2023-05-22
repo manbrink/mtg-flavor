@@ -38,6 +38,11 @@ export default component$(() => {
               Shuffle
             </a>
           </p>
+          <p class="p-2 text-center underline">
+            <a href="/search" class="my-link">
+              Search
+            </a>
+          </p>
         </div>
       </header>
 
