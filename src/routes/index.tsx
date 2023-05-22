@@ -23,7 +23,7 @@ export default component$(() => {
 
   return (
     <>
-      <header class="pb-2 pt-6">
+      <header class="pb-2 pt-2">
         <h1 class="text-center text-2xl font-bold">
           Magic the Gathering Flavor Text
         </h1>
@@ -46,7 +46,7 @@ export default component$(() => {
           <div class="pb-1 text-sm opacity-70">
             upvotes: {cardData.up_votes}
           </div>
-          <div class="overflow-hidden sm:w-[300px] md:w-[400px] lg:w-[525px]">
+          <div class="w-[400px] overflow-hidden">
             <Image
               src={cardData.scryfall_art_crop_url}
               layout="fullWidth"

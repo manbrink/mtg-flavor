@@ -27,19 +27,19 @@ export default component$(() => {
 
   return (
     <>
-      <div class="absolute left-0 top-0 p-4 text-3xl">
+      <div class="absolute left-0 top-0 px-2 py-4 text-3xl">
         <a href="/">
           <LuArrowBigLeft />
         </a>
       </div>
 
-      <header class="pb-4 pt-8">
+      <header class="pb-4 pt-2">
         <div>
           <Form class="flex justify-center">
-            <a class="px-3 py-2 text-2xl" href="/shuffle">
+            <a class="px-3 pb-2 text-2xl" href="/shuffle">
               <LuRefreshCcw />
             </a>
-            <a class="px-3 py-2 text-2xl" href="/shuffle">
+            <a class="px-3 pb-2 text-2xl" href="/shuffle">
               <LuThumbsUp />
             </a>
           </Form>
@@ -51,7 +51,7 @@ export default component$(() => {
           <div class="pb-1 text-sm opacity-70">
             upvotes: {cardData.up_votes}
           </div>
-          <div class="overflow-hidden sm:w-[300px] md:w-[400px] lg:w-[525px]">
+          <div class="overflow-hidden">
             <Image
               src={cardData.scryfall_art_crop_url}
               layout="fullWidth"
