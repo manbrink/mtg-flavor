@@ -5,8 +5,6 @@ import { createClient } from "@supabase/supabase-js";
 import { Image } from "@unpic/qwik";
 import { LuArrowBigLeft, LuThumbsUp } from "@qwikest/icons/lucide";
 
-import { DebouncedInput } from "~/components/debounced-input";
-
 interface Card {
   id: string;
   name: string;
@@ -43,31 +41,43 @@ export default component$(() => {
   const action = useUpVote();
 
   const searchTerm = useSignal("");
+  const debouncedValue = useSignal("");
   const cardData = useSignal([] as Card[]);
 
-  useTask$(async ({ track }) => {
+  useTask$(({ track, cleanup }) => {
     track(() => searchTerm.value);
+
+    const debounced = setTimeout(() => {
+      debouncedValue.value = searchTerm.value;
+    }, 500);
+
+    cleanup(() => clearTimeout(debounced));
+  });
+
+  useTask$(async ({ track }) => {
+    track(() => debouncedValue.value);
 
     const supabaseClient = createClient(
       import.meta.env.PUBLIC_SUPABASE_URL,
       import.meta.env.PUBLIC_SUPABASE_ANON_KEY
     );
 
-    if (searchTerm.value === "") {
+    if (debouncedValue.value === "") {
       return;
     }
 
     const { data, error } = await supabaseClient
       .from("cards")
       .select()
-      .textSearch("name", `'${searchTerm.value}'`, {
+      .textSearch("name", `'${debouncedValue.value}'`, {
         config: "english",
-      });
+      })
+      .limit(100);
 
     if (error) {
       console.error(error);
     } else {
-      // console.log(data);
+      console.log(data);
       cardData.value = data as Card[];
     }
   });
