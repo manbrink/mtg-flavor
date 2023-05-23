@@ -25,6 +25,11 @@ export const useDB = routeLoader$(async (requestEv) => {
 export default component$(() => {
   const cardSignal = useDB();
   const cardData = cardSignal.value.data;
+
+  if (!cardSignal.value.mainCardData.data) {
+    return <div>loading...</div>;
+  }
+
   const mainCardData = cardSignal.value.mainCardData.data[0];
 
   return (

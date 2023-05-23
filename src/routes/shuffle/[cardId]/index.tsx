@@ -54,10 +54,15 @@ export const useUpVote = routeAction$(async (upVote, requestEv) => {
 
 export default component$(() => {
   const cardSignal = useDB();
-  const cardData = cardSignal.value.cardData.data[0] as Card;
   const shuffleData = cardSignal.value.shuffleData.data;
 
   const action = useUpVote();
+
+  if (!cardSignal.value.cardData.data) {
+    return <div>loading...</div>;
+  }
+
+  const cardData = cardSignal.value.cardData.data[0] as Card;
 
   return (
     <>
