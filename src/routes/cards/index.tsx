@@ -55,7 +55,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="absolute left-0 top-0 px-3 py-4 text-3xl">
+      <div class="absolute left-0 top-0 px-3 py-4 text-4xl">
         <a href="/">
           <LuArrowBigLeft />
         </a>
@@ -65,11 +65,11 @@ export default component$(() => {
         <div class="text-2xl">Top Cards</div>
       </header>
 
-      <div class="grid items-start sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid items-start sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-screen overflow-scroll">
         {cardData.map((card: Card) => (
           <section
             key={card.id}
-            class="mx-auto flex min-h-full flex-col items-center justify-start"
+            class="mx-auto flex flex-col items-center justify-start pb-4"
           >
             <div class="shadow-lg">
               <div class="pb-1 text-sm opacity-70">
@@ -81,6 +81,7 @@ export default component$(() => {
                   layout="fixed"
                   width={300}
                   height={225}
+                  background="auto"
                   alt={card.name}
                 />
 
@@ -102,7 +103,7 @@ export default component$(() => {
               </div>
             </div>
 
-            <div class="p-4">
+            <div class="px-4 py-1">
               <h1 class="pb-1 text-2xl">{card.name}</h1>
               <h2 class="pb-1 text-lg opacity-70">{card.set_name}</h2>
               <p class="text-base italic opacity-70">{card.flavor_text}</p>

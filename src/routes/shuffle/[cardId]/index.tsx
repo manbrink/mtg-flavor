@@ -66,13 +66,13 @@ export default component$(() => {
 
   return (
     <>
-      <div class="absolute left-0 top-0 px-3 py-4 text-3xl">
+      <div class="absolute left-0 top-0 px-3 py-4 text-4xl">
         <a href="/">
           <LuArrowBigLeft />
         </a>
       </div>
 
-      <div class="w-full pb-2 pt-20 md:pt-10">
+      <div class="w-full pb-2 pt-16 md:pt-10">
         <div>
           <Form class="flex justify-center">
             <a class="px-8 pb-2 text-9xl md:text-6xl" href={`/shuffle/${shuffleData.id}`}>
@@ -113,9 +113,8 @@ export default component$(() => {
             <div class="overflow-hidden">
               <Image
                 src={cardData.scryfall_art_crop_url}
-                layout="fixed"
-                width={450}
-                height={600}
+                layout="fullWidth"
+                background="auto"
                 alt={cardData.name}
               />
             </div>
