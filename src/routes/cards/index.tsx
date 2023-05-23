@@ -93,6 +93,8 @@ export default component$(() => {
                           id: card.id,
                           up_votes: card.up_votes + 1,
                         });
+                      } else {
+                        alert("You already upvoted this card!");
                       }
                     }}
                   />

@@ -9,6 +9,9 @@ import {
   LuArrowBigLeft,
 } from "@qwikest/icons/lucide";
 
+import type { Card } from "../../types";
+import { inLocalStorage } from "../../queries";
+
 export const useDB = routeLoader$(async (requestEv) => {
   const supabaseClient = createServerClient(
     requestEv.env.get("PUBLIC_SUPABASE_URL")!,
@@ -51,7 +54,7 @@ export const useUpVote = routeAction$(async (upVote, requestEv) => {
 
 export default component$(() => {
   const cardSignal = useDB();
-  const cardData = cardSignal.value.cardData.data[0];
+  const cardData = cardSignal.value.cardData.data[0] as Card;
   const shuffleData = cardSignal.value.shuffleData.data;
 
   const action = useUpVote();
@@ -76,12 +79,16 @@ export default component$(() => {
               </a>
               <div class="cursor-pointer px-5 pb-2 text-5xl md:px-3 md:text-2xl">
                 <LuThumbsUp
-                  preventdefault:click
                   onClick$={async () => {
-                    await action.submit({
-                      id: cardData.id,
-                      up_votes: cardData.up_votes + 1,
-                    });
+                    if (!inLocalStorage(cardData)) {
+                      localStorage.setItem(cardData.id, "true");
+                      await action.submit({
+                        id: cardData.id,
+                        up_votes: cardData.up_votes + 1,
+                      });
+                    } else {
+                      alert("You already upvoted this card!");
+                    }
                   }}
                 />
               </div>

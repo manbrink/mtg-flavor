@@ -129,6 +129,8 @@ export default component$(() => {
                         } else {
                           console.error(res);
                         }
+                      } else {
+                        alert("You already upvoted this card!");
                       }
                     }}
                   />
