@@ -75,10 +75,10 @@ export default component$(() => {
       <div class="w-full pb-2 pt-20 md:pt-10">
         <div>
           <Form class="flex justify-center">
-            <a class="px-5 pb-2 text-5xl" href={`/shuffle/${shuffleData.id}`}>
+            <a class="px-8 pb-2 text-9xl md:text-6xl" href={`/shuffle/${shuffleData.id}`}>
               <LuRefreshCcw />
             </a>
-            <div class="cursor-pointer px-5 pb-2 text-5xl">
+            <div class="cursor-pointer px-8 pb-2 text-9xl md:text-6xl">
               <LuThumbsUp
                 onClick$={async () => {
                   if (!inLocalStorage(cardData)) {

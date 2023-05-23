@@ -84,7 +84,7 @@ export default component$(() => {
                   alt={card.name}
                 />
 
-                <div class="absolute right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
+                <div class="absolute text-4xl right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
                   <LuThumbsUp
                     onClick$={async () => {
                       if (!inLocalStorage(card)) {
