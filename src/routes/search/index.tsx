@@ -1,41 +1,12 @@
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
-import { server$ } from "@builder.io/qwik-city";
 
 import { createClient } from "@supabase/supabase-js";
 import { Image } from "@unpic/qwik";
 import { LuArrowBigLeft, LuThumbsUp } from "@qwikest/icons/lucide";
 
-interface Card {
-  id: string;
-  name: string;
-  set_name: string;
-  flavor_text: string;
-  scryfall_art_crop_url: string;
-  up_votes: number;
-}
-
-export const upVote = server$(async (upVote) => {
-  const supabaseClient = createClient(
-    import.meta.env.PUBLIC_SUPABASE_URL,
-    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-  );
-
-  const { data, error } = await supabaseClient
-    .from("cards")
-    .update({ up_votes: upVote.up_votes })
-    .eq("id", upVote.id)
-    .select();
-
-  if (error) {
-    console.error(error);
-  } else {
-    console.log("data from server", data);
-    return {
-      success: true,
-      data,
-    };
-  }
-});
+import type { Card } from "../types";
+import { upVote } from "../mutations";
+import { inLocalStorage } from "../queries";
 
 export default component$(() => {
   const searchTerm = useSignal("");
@@ -144,16 +115,20 @@ export default component$(() => {
                 <div class="absolute right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
                   <LuThumbsUp
                     onClick$={async () => {
-                      const res = await upVote({
-                        id: card.id,
-                        up_votes: card.up_votes + 1,
-                      });
+                      if (!inLocalStorage(card)) {
+                        localStorage.setItem(card.id, "true");
 
-                      if (res.success) {
-                        card.up_votes = res.data[0].up_votes;
-                        cardData.value = [...cardData.value];
-                      } else {
-                        console.error(res);
+                        const res = await upVote({
+                          id: card.id,
+                          up_votes: card.up_votes + 1,
+                        });
+
+                        if (res && res.success) {
+                          card.up_votes = res.data[0].up_votes;
+                          cardData.value = [...cardData.value];
+                        } else {
+                          console.error(res);
+                        }
                       }
                     }}
                   />

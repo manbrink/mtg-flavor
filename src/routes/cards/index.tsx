@@ -4,16 +4,9 @@ import { routeLoader$, routeAction$ } from "@builder.io/qwik-city";
 import { createServerClient } from "supabase-auth-helpers-qwik";
 import { Image } from "@unpic/qwik";
 import { LuArrowBigLeft, LuThumbsUp } from "@qwikest/icons/lucide";
-import Cookies from "js-cookie";
 
-interface Card {
-  id: string;
-  name: string;
-  set_name: string;
-  flavor_text: string;
-  scryfall_art_crop_url: string;
-  up_votes: number;
-}
+import type { Card } from "../types";
+import { inLocalStorage } from "../queries";
 
 export const useDB = routeLoader$(async (requestEv) => {
   const supabaseClient = createServerClient(
@@ -47,11 +40,6 @@ export const useUpVote = routeAction$(async (upVote, requestEv) => {
   if (error) {
     console.error(error);
   } else {
-    Cookies.set(`upvoted-${upVote.id}`, "true", {
-      expires: 365,
-      sameSite: "strict",
-    });
-
     return {
       success: true,
       data,
@@ -98,12 +86,14 @@ export default component$(() => {
 
                 <div class="absolute right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
                   <LuThumbsUp
-                    preventdefault:click
                     onClick$={async () => {
-                      await action.submit({
-                        id: card.id,
-                        up_votes: card.up_votes + 1,
-                      });
+                      if (!inLocalStorage(card)) {
+                        localStorage.setItem(card.id, "true");
+                        await action.submit({
+                          id: card.id,
+                          up_votes: card.up_votes + 1,
+                        });
+                      }
                     }}
                   />
                 </div>
