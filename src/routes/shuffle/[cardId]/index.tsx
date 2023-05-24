@@ -75,7 +75,10 @@ export default component$(() => {
       <div class="w-full pb-2 pt-16 md:pt-10">
         <div>
           <Form class="flex justify-center">
-            <a class="px-8 pb-2 text-9xl md:text-6xl" href={`/shuffle/${shuffleData.id}`}>
+            <a
+              class="px-8 pb-2 text-9xl md:text-6xl"
+              href={`/shuffle/${shuffleData.id}`}
+            >
               <LuRefreshCcw />
             </a>
             <div class="cursor-pointer px-8 pb-2 text-9xl md:text-6xl">
@@ -97,7 +100,7 @@ export default component$(() => {
         </div>
       </div>
 
-      <div class="flex flex-col">
+      <div class="flex flex-col pb-2">
         <section class="mx-auto flex flex-col items-center justify-center">
           <div class="px-4 pb-6 pt-4">
             <h1 class="pb-1 text-2xl">{cardData.name}</h1>
@@ -113,7 +116,9 @@ export default component$(() => {
             <div class="overflow-hidden">
               <Image
                 src={cardData.scryfall_art_crop_url}
-                layout="fullWidth"
+                layout="fixed"
+                width={450}
+                height={350}
                 background="auto"
                 alt={cardData.name}
               />

@@ -23,6 +23,7 @@
     "qwik": "qwik"
   },
   "devDependencies": {
+    "@builder.io/partytown": "^0.8.0",
     "@builder.io/qwik": "^1.1.4",
     "@builder.io/qwik-city": "^1.1.4",
     "@types/eslint": "8.37.0",
@@ -47,7 +48,6 @@
     "@supabase/supabase-js": "^2.22.0",
     "@types/js-cookie": "^3.0.3",
     "@unpic/qwik": "^0.0.19",
-    "@vercel/analytics": "^1.0.1",
     "supabase-auth-helpers-qwik": "^0.0.3"
   }
 }
