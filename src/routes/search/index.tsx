@@ -136,6 +136,7 @@ export default component$(() => {
                 </div>
               </div>
             </div>
+            <div class="pb-1 text-sm opacity-70">{card.artist}</div>
 
             <div class="px-4 py-1">
               <h1 class="pb-1 text-2xl">{card.name}</h1>

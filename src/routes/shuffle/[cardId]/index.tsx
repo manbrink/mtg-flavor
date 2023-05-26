@@ -124,6 +124,7 @@ export default component$(() => {
               />
             </div>
           </div>
+          <div class="pb-1 text-sm opacity-70">{cardData.artist}</div>
         </section>
       </div>
     </>
