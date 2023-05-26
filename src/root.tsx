@@ -23,6 +23,10 @@ export default component$(() => {
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
         <script defer src="/_vercel/insights/script.js"></script>
+        <script
+          defer
+          src="https://www.googletagmanager.com/gtag/js?id=G-EKJPST32L7"
+        ></script>
       </head>
       <body lang="en">
         <RouterOutlet />
