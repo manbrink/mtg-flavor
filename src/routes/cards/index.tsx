@@ -65,7 +65,7 @@ export default component$(() => {
         <div class="text-2xl">Top Cards</div>
       </header>
 
-      <div class="grid items-start sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-screen overflow-scroll">
+      <div class="grid h-screen items-start overflow-scroll sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {cardData.map((card: Card) => (
           <section
             key={card.id}
@@ -85,7 +85,7 @@ export default component$(() => {
                   alt={card.name}
                 />
 
-                <div class="absolute text-4xl right-0 top-0 cursor-pointer p-1 text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
+                <div class="absolute right-0 top-0 cursor-pointer p-1 text-4xl text-gray-200 opacity-60 transition-opacity duration-1000 hover:opacity-100">
                   <LuThumbsUp
                     onClick$={async () => {
                       if (!inLocalStorage(card)) {
@@ -102,6 +102,7 @@ export default component$(() => {
                 </div>
               </div>
             </div>
+            <div class="pb-1 text-sm opacity-70">{card.artist}</div>
 
             <div class="px-4 py-1">
               <h1 class="pb-1 text-2xl">{card.name}</h1>

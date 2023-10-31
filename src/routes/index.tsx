@@ -70,6 +70,7 @@ export default component$(() => {
             />
           </div>
         </div>
+        <div class="pb-1 text-sm opacity-70">{mainCardData.artist}</div>
 
         <div class="p-4">
           <h1 class="pb-1 text-2xl">{mainCardData.name}</h1>
